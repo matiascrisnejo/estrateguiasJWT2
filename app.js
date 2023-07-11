@@ -7,7 +7,7 @@ var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var facultadesRouter = require('./routes/facultades');
 var profesoresRouter = require('./routes/profesores');
-var loginRoouter = require('./routes/auth');
+var loginRouter = require('./routes/auth');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./swagger');
 
@@ -32,7 +32,7 @@ app.use('/car', carrerasRouter);
 app.use('/mat', materiasRouter);
 app.use('/fac', facultadesRouter);
 app.use('/pro', profesoresRouter);
-app.use('/login', loginRoouter);
+app.use('/login', loginRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

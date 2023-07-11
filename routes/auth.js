@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const {
-  signupController,
+  signup,
   getProfile,
-  signinController,
+  signin,
   logout,
 } = require('../controllers/authController');
 const verifyToken = require('../libs/verifyToken');
 
 // Rutas de autenticación
-router.post('/signup', signupController);
-router.post('/iniciar', signinController);
+router.post('/registrarse', signup);
+router.post('/iniciar', signin);
 router.get('/perfil', verifyToken, getProfile);
 router.get('/cerrar', logout);
 

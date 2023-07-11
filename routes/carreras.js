@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+var verifyToken = require('../libs/verifyToken');
 
 
-router.get("/", (req, res) => {
+router.get("/", verifyToken,(req, res) => {
   
   const pageNum = Number.parseInt(req.query.page);    //verifica que sean numeros evitando el ingreso de texto
   const sizeNum = Number.parseInt(req.query.size);  //verifica que sean numeros evitando el ingreso de texto
@@ -45,7 +46,7 @@ router.get("/", (req, res) => {
 //     .catch(() => res.sendStatus(500));
 // });
 
-router.post("/", (req, res) => {
+router.post("/", verifyToken, (req, res) => {
   models.carrera
     .create({ nombre: req.body.nombre , id_facultad: req.body.id_facultad })
     .then(carrera => res.status(201).send({ id: carrera.id }))
@@ -70,7 +71,7 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
-router.get("/:id", (req, res) => {
+router.get("/:id", verifyToken, (req, res) => {
   findCarrera(req.params.id, {
     onSuccess: carrera => res.send(carrera),
     onNotFound: () => res.sendStatus(404),
@@ -78,7 +79,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", verifyToken, (req, res) => {
   const onSuccess = carrera =>
     carrera
       .update({ nombre: req.body.nombre },{ fields: ["nombre"] })
@@ -99,7 +100,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verifyToken, (req, res) => {
   const onSuccess = carrera =>
     carrera
       .destroy()

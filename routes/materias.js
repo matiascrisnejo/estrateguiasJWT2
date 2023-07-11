@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+var verifyToken = require('../libs/verifyToken');
 
 // router.get("/", (req, res,next) => {
 
@@ -81,7 +82,7 @@ var models = require("../models");
  *         description: Error interno del servidor
  */
 
-router.get("/", (req, res) => {
+router.get("/", verifyToken, (req, res) => {
   
   const pageNum = Number.parseInt(req.query.page);    //verifica que sean numeros evitando el ingreso de texto
   const sizeNum = Number.parseInt(req.query.size);  //verifica que sean numeros evitando el ingreso de texto
@@ -155,7 +156,7 @@ router.get("/", (req, res) => {
  *         description: Error interno del servidor
  */
 
-router.post("/", (req, res) => {
+router.post("/", verifyToken, (req, res) => {
   models.materia
     .create({ nombre: req.body.nombre,id_carrera:req.body.id_carrera })
     .then(materia => res.status(201).send({ id: materia.id }))
@@ -218,7 +219,7 @@ const findmateria = (id, { onSuccess, onNotFound, onError }) => {
  *         description: Error interno del servidor
  */
 
-router.get("/:id", (req, res) => {
+router.get("/:id", verifyToken, (req, res) => {
   findmateria(req.params.id, {
     onSuccess: materia => res.send(materia),
     onNotFound: () => res.sendStatus(404),
@@ -270,7 +271,7 @@ router.get("/:id", (req, res) => {
  *         description: Error interno del servidor
  */
 
-router.put("/:id", (req, res) => {
+router.put("/:id", verifyToken, (req, res) => {
   const onSuccess = materia =>
     materia
       .update({ nombre: req.body.nombre, id_carrera: req.body.id_carrera}, { fields: ["nombre","id_carrera"] })
@@ -314,7 +315,7 @@ router.put("/:id", (req, res) => {
  *         description: Error interno del servidor
  */
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verifyToken, (req, res) => {
   const onSuccess = materia =>
     materia
       .destroy()
